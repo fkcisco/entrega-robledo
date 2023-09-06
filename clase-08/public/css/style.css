@@ -1,0 +1,17 @@
+/* Agrega el estilo CSS para el fondo */
+.container {
+    background-image: url ("static/img/john-kenny.webp");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 50%;
+    height: 50vh; /* Ajusta la altura según tus necesidades */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+}
+
+.welcome-message {
+    color: red; /* Color rojo para el mensaje */
+}

@@ -1,0 +1,29 @@
+[
+    {
+        "title":"Mate 1 ",
+        "description":"mate de plastico color verde",
+        "price":50,
+        "image":"img/img1.png",
+        "code":"mat780",
+        "stock":40,
+        "id":1
+    },
+    {
+        "title":"Mate 2",
+        "description":"mate de acero",
+        "price":55,
+        "image":"img/img2.png",
+        "code":"mat880",
+        "stock":30,
+        "id":2
+    },
+    {
+        "title":"Mate 3",
+        "description":"mate de madera",
+        "price":45,
+        "image":"img/img3.png",
+        "code":"mat980",
+        "stock":50,
+        "id":3
+    }
+]

@@ -1,0 +1,17 @@
+{
+  "name": "clase-08",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.18.2",
+    "path": "^0.12.7",
+    "router": "^1.3.8"
+  }
+}
