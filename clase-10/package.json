@@ -1,5 +1,5 @@
 {
-  "name": "clase-09",
+  "name": "clase-10",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,6 +12,8 @@
   "dependencies": {
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
-    "nodemon": "^3.0.1"
+    "express-router": "^0.0.1",
+    "nodemon": "^3.0.1",
+    "socket.io": "^4.7.2"
   }
 }

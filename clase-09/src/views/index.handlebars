@@ -1,0 +1,20 @@
+<div>
+    <h1>Informacion del usuario</h1>
+    <p>Nombre: {{user.name}}</p>
+    <p>Apellido: {{user.lastName}}</p>
+    <p>Edad: {{user.age}}</p>
+    <p>Correo: {{user.mail}}</p>
+    <p>Telefono: {{user.phone}}</p>
+
+    {{#if isAdmin}}
+        <h2>Lista de Comidas</h2>
+        <ul>
+            {{#each food}}
+                <li>{{this.name}} - ${{this.price}}</li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>No tiene permiso para acceder a la lista de alimentos</p>
+    {{/if}}
+</div>
+<script src="/js/index.js"></script>

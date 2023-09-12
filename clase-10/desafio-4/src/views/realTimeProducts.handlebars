@@ -1,0 +1,21 @@
+<div>
+   <p>Lista de productos en tiempo real:</p>
+   <ul id="foodList">
+   </ul>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+
+    socket.on('updateFoods', (foods) => {
+        const foodList = document.getElementById('foodList');
+        foodList.innerHTML = '';
+
+        foods.forEach((food) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${food.name}: $${food.price}`;
+            foodList.appendChild(listItem);
+        });
+    });
+</script>
+<script src="/js/index.js"></script>
