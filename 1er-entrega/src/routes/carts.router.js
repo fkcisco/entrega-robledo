@@ -4,52 +4,10 @@ const router = express.Router();
 router.use( express.json() );
 router.use( express.urlencoded( { extended: true } ) );
 
-class CartManager {
-        
-    constructor(rutaPath) {
-        this.carts = [];
-        this.path = rutaPath;
-        this.nextId = 1;
-        this.loadCart();
-    }   
-    
-    loadCart() {
-        try {
-            const data = fs.readFileSync(this.path, 'utf8');
-            this.carts = JSON.parse(data);
-        } catch (error) {
-            this.carts = [];           
-        }
-    }
+import CartManager from '../class/CartManager.js';
 
-    // guardo los productos
-    saveCart(carrito) {
-        fs.writeFileSync(this.path, JSON.stringify(carrito), 'utf8');
-    }  
+const cartManager = new CartManager('./carrito.json');
 
-    // guardo vacio
-    saveCartEmpty() {
-        fs.writeFileSync(this.path, JSON.stringify({}), 'utf8');
-    }
-    
-     // enlistamos los productos
-    getCart() {
-        this.loadCart(); 
-        return this.carts;
-    }    
-    
-    // consultamos el producto por el id (find busca comparando los id)
-    getCartId(cartId) {
-        this.getCart();
-        const product = this.carts.find(product => product.id === cartId);
-          if (!product) {
-            throw new Error("el Carrito no encontrador.");
-        }
-        return product;
-    }
-
-
-}
 
 let cartIdCounter = 1;
 function generateIdCart() {
@@ -58,39 +16,42 @@ function generateIdCart() {
     return newIdCart;
 }
 
-const cartManager = new CartManager('./carrito.json');
+// Este post no va entonces, es solo el post pasando los valores por el params
+// router.post( "/", ( req, res ) => {      
+//     try {           
+//         const { products } = req.body;
+//         const cartId = generateIdCart();
 
-router.post( "/", ( req, res ) => {      
-    try {           
-        const { products } = req.body;
-        const cartId = generateIdCart();
+//         const createCart = {
+//             id: cartId,
+//             products: products
+//         };        
 
-        const createCart = {
-            id: cartId,
-            products: products
-        };        
+//         let carrito = [];
 
-        let carrito = [];
+//         try {
+//             carrito = cartManager.getCart();
+//         } catch (error) {
+//             cartManager.saveCartEmpty()              
+//         }
 
-        try {
-            carrito = cartManager.getCart();
-        } catch (error) {
-            cartManager.saveCartEmpty()              
-        }
+//         const idExistente = carrito.find(item => item.id === createCart.id);
 
-        console.log(createCart)
+//         if(!idExistente) {
+//             carrito.push(createCart); 
+//             cartManager.saveCart(carrito);
+//             res.status(200).json(carrito);  
+//         } else {
+//             res.status(500).json({error: "El producto ya existe en el carrito."});
+//         }              
+ 
         
-        carrito.push(createCart); 
-        cartManager.saveCart(carrito);      
-
-        res.status(200).json(carrito);  
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({error: "Error al crear el carrito"});
         
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({error: "Error al crear el carrito"});
-        
-    } 
-})
+//     } 
+// })
 
 router.get( "/:cid", ( req, res ) => {
     
@@ -109,30 +70,53 @@ router.post( "/:cid/product/:pid", ( req, res ) => {
 
     const cartId = req.params.cid;
     const productId = parseInt(req.params.pid);
-    const { quantity } = req.body;
 
     let carrito = [];
 
     try {
-        carrito = cartManager.getCart();
+        carrito = cartManager.getCart();         
     } catch (error) {
         cartManager.saveCartEmpty()              
     }
 
-    const cart = carrito.find( (cart) => cart.id === cartId);
+    const productToAdd = {
+        product: productId,
+        quantity: 1
+    };
 
-    if (cart) {
+    const createCart = {
+        id: cartId,
+        products: [productToAdd]
+    }; 
 
-        const existingProduct = cart.products.find((product) => product.id === productId)
-        
+    const existingCartIndex = carrito.findIndex((cart) => cart.id === cartId);
+
+    if (existingCartIndex !== -1) {
+
+        const existingProduct = carrito[existingCartIndex].products.find((product) => product.product === productId);
+
         if (existingProduct) {
-            existingProduct.quantity += quantity || 1
-        } else {
-            cart.products.push( {id: productId, quantity: quantity || 1});
-        }  
 
-        cartManager.saveCart({cart});
+            existingProduct.quantity += 1;
+        } else {
+
+            carrito[existingCartIndex].products.push({ product: productId, quantity: quantity || 1 });
+        }
+    } else {
+        const productToAdd = {
+            product: productId,
+            quantity: 1
+        };
+
+        const createCart = {
+            id: cartId,
+            products: [productToAdd]
+        };
+
+        carrito.push(createCart);
     }
+
+    cartManager.saveCart(carrito);
 
     
 })

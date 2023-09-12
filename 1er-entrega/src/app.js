@@ -8,8 +8,8 @@ app.use( express.urlencoded( { extended:true } ) );
 import productsRouter from './routes/products.router.js';
 import cartsRouter from './routes/carts.router.js';
 
-app.use('/app/products', productsRouter);
-app.use('/app/carts', cartsRouter );
+app.use('/api/products', productsRouter);
+app.use('/api/carts', cartsRouter );
 
 const PORT = 8080;
 app.listen(PORT, () => {
